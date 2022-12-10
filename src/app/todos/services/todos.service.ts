@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { TodoInterface } from '../types/todo.interface';
-import { FilterEnum } from './filter.enum';
+import { FilterEnum } from '../types/filter.enum';
 
 @Injectable()
 export class TodosService {
