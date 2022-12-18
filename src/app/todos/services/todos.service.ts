@@ -1,69 +1,33 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
-import { TodoInterface } from '../types/todo.interface';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { FilterEnum } from '../types/filter.enum';
-import { TodosService } from './todos.abstract.service';
+import { TodoInterface } from '../types/todo.interface';
+import { TodosArrayService } from './todos-array.service';
+import { TodosSubjectService } from './todos-subject.service';
 
-@Injectable()
-export class TodosSubjectService implements TodosService {
-  todos$ = new BehaviorSubject<TodoInterface[]>([]);
-  filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
+export function dataServiceFactory() {
+    const config = 'array'; // this could be any value, e.g. a value read from a configuration file
+    if (config === 'array') {
+        return new TodosArrayService();
+    } else {
+        return new TodosSubjectService();
+    }
+}
 
-  constructor() {
-    console.log("TodosSubjectService is used as backend");
-  }
-  addTodo(text: string): void {
-    const newTodo: TodoInterface = {
-      text,
-      isCompleted: false,
-      id: Math.random().toString(16),
-    };
-    const updatedTodos = [...this.todos$.getValue(), newTodo];
-    this.todos$.next(updatedTodos);
-  }
 
-  toggleAll(isCompleted: boolean): void {
-    const updatedTodos = this.todos$.getValue().map((todo) => {
-      return {
-        ...todo,
-        isCompleted,
-      };
-    });
-    this.todos$.next(updatedTodos);
-  }
+@Injectable({
+    providedIn: 'root',
+    useFactory: dataServiceFactory
+})
+export abstract class TodosService {
+    todos$!: Observable<TodoInterface[]>;
+    filter$!: BehaviorSubject<FilterEnum>;
 
-  changeFilter(filterName: FilterEnum): void {
-    this.filter$.next(filterName);
-  }
 
-  changeTodo(id: string, text: string): void {
-    const updatedTodos = this.todos$.getValue().map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          text,
-        };
-      }
-      return todo;
-    });
-    this.todos$.next(updatedTodos);
-  }
-
-  removeTodo(id: string): void {
-    const updatedTodos = this.todos$.getValue().filter((todo) => todo.id != id);
-    this.todos$.next(updatedTodos);
-  }
-
-  toggleTodo(id: string): void {
-    const updatedTodos = this.todos$.getValue().map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          isCompleted: !todo.isCompleted,
-        };
-      }
-      return todo;
-    });
-    this.todos$.next(updatedTodos);
-  }
+    abstract addTodo(text: string): void;
+    abstract toggleAll(isCompleted: boolean): void;
+    abstract changeFilter(filterName: FilterEnum): void;
+    abstract changeTodo(id: string, text: string): void;
+    abstract removeTodo(id: string): void;
+    abstract toggleTodo(id: string): void;
 }

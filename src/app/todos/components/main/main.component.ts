@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TodoInterface } from '../../types/todo.interface';
 import { combineLatest, every, map, Observable } from 'rxjs';
 import { FilterEnum } from '../../types/filter.enum';
-import { TodosService } from '../../services/todos.abstract.service';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos-main',

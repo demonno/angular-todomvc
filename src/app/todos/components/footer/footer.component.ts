@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { FilterEnum } from '../../types/filter.enum';
-import { TodosService } from '../../services/todos.abstract.service';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos-footer',

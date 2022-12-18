@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { TodoInterface } from '../types/todo.interface';
 import { FilterEnum } from '../types/filter.enum';
 import { TodosService } from './todos.service';
 
 @Injectable()
-export class TodosArrayService implements TodosService {
-  private todoStorage: TodoInterface[] = [];
-  private todoSubject = new BehaviorSubject<TodoInterface[]>([]);
-  todos$: Observable<TodoInterface[]> = this.todoSubject.asObservable();
+export class TodosSubjectService implements TodosService {
+  todos$ = new BehaviorSubject<TodoInterface[]>([]);
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
 
   constructor() {
-    console.log("TodosArrayService is used as backend");
-
+    console.log("TodosSubjectService is used as backend");
   }
   addTodo(text: string): void {
     const newTodo: TodoInterface = {
@@ -21,19 +18,18 @@ export class TodosArrayService implements TodosService {
       isCompleted: false,
       id: Math.random().toString(16),
     };
-    this.todoStorage = [...this.todoStorage, newTodo];
-    this.todoSubject.next(this.todoStorage);
+    const updatedTodos = [...this.todos$.getValue(), newTodo];
+    this.todos$.next(updatedTodos);
   }
 
   toggleAll(isCompleted: boolean): void {
-    const updatedTodos = this.todoStorage.map((todo) => {
+    const updatedTodos = this.todos$.getValue().map((todo) => {
       return {
         ...todo,
         isCompleted,
       };
     });
-    this.todoStorage = updatedTodos;
-    this.todoSubject.next(updatedTodos);
+    this.todos$.next(updatedTodos);
   }
 
   changeFilter(filterName: FilterEnum): void {
@@ -41,7 +37,7 @@ export class TodosArrayService implements TodosService {
   }
 
   changeTodo(id: string, text: string): void {
-    const updatedTodos = this.todoStorage.map((todo) => {
+    const updatedTodos = this.todos$.getValue().map((todo) => {
       if (todo.id === id) {
         return {
           ...todo,
@@ -50,17 +46,16 @@ export class TodosArrayService implements TodosService {
       }
       return todo;
     });
-    this.todoStorage = updatedTodos;
-    this.todoSubject.next(updatedTodos);
+    this.todos$.next(updatedTodos);
   }
 
   removeTodo(id: string): void {
-    const updatedTodos = this.todoStorage.filter((todo) => todo.id != id);
-    this.todoSubject.next(updatedTodos);
+    const updatedTodos = this.todos$.getValue().filter((todo) => todo.id != id);
+    this.todos$.next(updatedTodos);
   }
 
   toggleTodo(id: string): void {
-    const updatedTodos = this.todoStorage.map((todo) => {
+    const updatedTodos = this.todos$.getValue().map((todo) => {
       if (todo.id === id) {
         return {
           ...todo,
@@ -69,7 +64,6 @@ export class TodosArrayService implements TodosService {
       }
       return todo;
     });
-    this.todoStorage = updatedTodos;
-    this.todoSubject.next(updatedTodos);
+    this.todos$.next(updatedTodos);
   }
 }

@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TodoInterface } from '../../types/todo.interface';
-import { TodosService } from '../../services/todos.abstract.service';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos-todo',
