@@ -11,6 +11,10 @@ export class TodosArrayService implements TodosService {
   todos$: Observable<TodoInterface[]> = this.todoSubject.asObservable();
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
 
+  constructor() {
+    console.log("TodosArrayService");
+
+  }
   addTodo(text: string): void {
     const newTodo: TodoInterface = {
       text,

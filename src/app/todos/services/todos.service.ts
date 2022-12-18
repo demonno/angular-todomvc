@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { TodoInterface } from '../types/todo.interface';
 import { FilterEnum } from '../types/filter.enum';
+import { TodosService } from './todos.abstract.service';
 
 @Injectable()
-export class TodosSubjectService {
+export class TodosSubjectService implements TodosService {
   todos$ = new BehaviorSubject<TodoInterface[]>([]);
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
+
+  constructor() {
+    console.log("TodosSubjectService");
+  }
   addTodo(text: string): void {
     const newTodo: TodoInterface = {
       text,
