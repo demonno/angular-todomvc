@@ -1,0 +1,74 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { TodoInterface } from '../types/todo.interface';
+import { FilterEnum } from '../types/filter.enum';
+
+@Injectable()
+export class TodosArrayService {
+  private todoStorage: TodoInterface[] = [];
+  private todoSubject = new BehaviorSubject<TodoInterface[]>([]);
+  todos$: Observable<TodoInterface[]> = this.todoSubject.asObservable();
+  filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
+
+  addTodo(text: string): void {
+    const newTodo: TodoInterface = {
+      text,
+      isCompleted: false,
+      id: Math.random().toString(16),
+    };
+    this.todoStorage = [...this.todoStorage, newTodo];
+    this.todoSubject.next(this.todoStorage);
+  }
+
+  toggleAll(isCompleted: boolean): void {
+    const updatedTodos = this.todoStorage.map((todo) => {
+      return {
+        ...todo,
+        isCompleted,
+      };
+    });
+    this.todoStorage = updatedTodos;
+    this.todoSubject.next(updatedTodos);
+  }
+
+  changeFilter(filterName: FilterEnum): void {
+    this.filter$.next(filterName);
+  }
+
+  changeTodo(id: string, text: string): void {
+    const updatedTodos = this.todoStorage.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          text,
+        };
+      }
+      return todo;
+    });
+    this.todoStorage = updatedTodos;
+    this.todoSubject.next(updatedTodos);
+  }
+
+  removeTodo(id: string): void {
+    const updatedTodos = this.todoStorage.filter((todo) => todo.id != id);
+    this.todoSubject.next(updatedTodos);
+  }
+
+  toggleTodo(id: string): void {
+    console.log('Toggle');
+    const updatedTodos = this.todoStorage.map((todo) => {
+      console.log('Map', todo.id, id);
+      if (todo.id === id) {
+        return {
+          ...todo,
+          isCompleted: !todo.isCompleted,
+        };
+      }
+      console.log('Map', todo.id, 'Not Changed');
+      return todo;
+    });
+    console.log(updatedTodos);
+    this.todoStorage = updatedTodos;
+    this.todoSubject.next(updatedTodos);
+  }
+}
