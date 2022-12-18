@@ -10,7 +10,7 @@ export class TodosSubjectService implements TodosService {
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
 
   constructor() {
-    console.log("TodosSubjectService");
+    console.log("TodosSubjectService is used as backend");
   }
   addTodo(text: string): void {
     const newTodo: TodoInterface = {

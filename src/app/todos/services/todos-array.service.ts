@@ -12,7 +12,7 @@ export class TodosArrayService implements TodosService {
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
 
   constructor() {
-    console.log("TodosArrayService");
+    console.log("TodosArrayService is used as backend");
 
   }
   addTodo(text: string): void {
@@ -60,19 +60,15 @@ export class TodosArrayService implements TodosService {
   }
 
   toggleTodo(id: string): void {
-    console.log('Toggle');
     const updatedTodos = this.todoStorage.map((todo) => {
-      console.log('Map', todo.id, id);
       if (todo.id === id) {
         return {
           ...todo,
           isCompleted: !todo.isCompleted,
         };
       }
-      console.log('Map', todo.id, 'Not Changed');
       return todo;
     });
-    console.log(updatedTodos);
     this.todoStorage = updatedTodos;
     this.todoSubject.next(updatedTodos);
   }
