@@ -3,6 +3,7 @@ import { TodoInterface } from '../../types/todo.interface';
 import { combineLatest, every, map, Observable } from 'rxjs';
 import { TodosService } from '../../services/todos.service';
 import { FilterEnum } from '../../types/filter.enum';
+import { TodosArrayService } from '../../services/todos-array.service';
 
 @Component({
   selector: 'app-todos-main',
@@ -14,16 +15,16 @@ export class MainComponent {
   isAllTodosSelected$: Observable<boolean>;
   editingId: string | null = null;
 
-  constructor(private todosService: TodosService) {
-    this.isAllTodosSelected$ = this.todosService.todos$.pipe(
+  constructor(private todosArrayService: TodosArrayService) {
+    this.isAllTodosSelected$ = this.todosArrayService.todos$.pipe(
       map((todos) => todos.every((todo) => todo.isCompleted))
     );
-    this.noTodoClass$ = this.todosService.todos$.pipe(
+    this.noTodoClass$ = this.todosArrayService.todos$.pipe(
       map((todos) => todos.length === 0)
     );
     this.visibleTodos$ = combineLatest(
-      this.todosService.todos$,
-      this.todosService.filter$
+      this.todosArrayService.todos$,
+      this.todosArrayService.filter$
     ).pipe(
       map(([todos, filter]: [TodoInterface[], FilterEnum]) => {
         if (filter === FilterEnum.active) {
@@ -38,7 +39,7 @@ export class MainComponent {
 
   toggleAllTodos(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.todosService.toggleAll(target.checked);
+    this.todosArrayService.toggleAll(target.checked);
   }
 
   setEditingId(editingId: string | null): void {
