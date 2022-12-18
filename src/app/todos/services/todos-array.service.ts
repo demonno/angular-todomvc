@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { TodoInterface } from '../types/todo.interface';
 import { FilterEnum } from '../types/filter.enum';
+import { TodosService } from './todos.abstract.service';
 
 @Injectable()
-export class TodosArrayService {
+export class TodosArrayService implements TodosService {
   private todoStorage: TodoInterface[] = [];
   private todoSubject = new BehaviorSubject<TodoInterface[]>([]);
   todos$: Observable<TodoInterface[]> = this.todoSubject.asObservable();

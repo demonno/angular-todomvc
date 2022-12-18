@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TodoInterface } from '../../types/todo.interface';
 import { combineLatest, every, map, Observable } from 'rxjs';
-import { TodosService } from '../../services/todos.service';
 import { FilterEnum } from '../../types/filter.enum';
 import { TodosArrayService } from '../../services/todos-array.service';
 

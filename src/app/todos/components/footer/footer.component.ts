@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { TodosService } from '../../services/todos.service';
 import { FilterEnum } from '../../types/filter.enum';
 import { TodosArrayService } from '../../services/todos-array.service';
 

@@ -4,7 +4,7 @@ import { TodoInterface } from '../types/todo.interface';
 import { FilterEnum } from '../types/filter.enum';
 
 @Injectable()
-export class TodosService {
+export class TodosSubjectService {
   todos$ = new BehaviorSubject<TodoInterface[]>([]);
   filter$ = new BehaviorSubject<FilterEnum>(FilterEnum.all);
   addTodo(text: string): void {
