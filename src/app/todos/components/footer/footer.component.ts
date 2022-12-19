@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { TodosService } from '../../services/todos.service';
 import { FilterEnum } from '../../types/filter.enum';
-import { TodosArrayService } from '../../services/todos-array.service';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos-footer',
@@ -15,7 +14,7 @@ export class FooterComponent {
   filter$: Observable<FilterEnum>;
   filterEnum = FilterEnum;
 
-  constructor(private todoService: TodosArrayService) {
+  constructor(private todoService: TodosService) {
     this.activeCount$ = this.todoService.todos$.pipe(
       map((todos) => todos.filter((todo) => !todo.isCompleted).length)
     );

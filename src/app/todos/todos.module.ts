@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { TodosComponent } from 'src/app/todos/components/todos/todos.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import { TodosService } from './services/todos.service';
+import { TodosSubjectService } from './services/todos-subject.service';
 import { MainComponent } from './components/main/main.component';
 import { CommonModule } from '@angular/common';
 import { TodoComponent } from './components/todo/todo.component';
@@ -25,6 +25,6 @@ const routes: Routes = [
     FooterComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(routes)],
-  providers: [TodosService, TodosArrayService],
+  providers: [TodosSubjectService, TodosArrayService],
 })
-export class TodosModule {}
+export class TodosModule { }

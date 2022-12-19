@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TodoInterface } from '../../types/todo.interface';
-import { TodosArrayService } from '../../services/todos-array.service';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos-todo',
@@ -24,7 +24,7 @@ export class TodoComponent implements OnInit, OnChanges {
   editingText: string = '';
   @ViewChild('textInput') textInput: ElementRef | null | undefined;
 
-  constructor(private todoService: TodosArrayService) {}
+  constructor(private todoService: TodosService) { }
 
   ngOnInit(): void {
     this.editingText = this.todoProps.text;
